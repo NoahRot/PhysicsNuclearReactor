@@ -1,9 +1,11 @@
 import numpy as np
 
+# Simulation of the reactor
 def simulation(nbr_mech, M, F, height, delta_x, ksig_f, P_total):
+
     # === Simulation ===
-    max_iteration = int(1e3)
-    M_inv = np.linalg.inv(M)
+    max_iteration = int(1e3)    # Maximum iteration for the iterative eigen solver
+    M_inv = np.linalg.inv(M)    # Inverse of M
 
     # Initial guess
     list_k = [] # (just for evolution of k)
@@ -22,6 +24,8 @@ def simulation(nbr_mech, M, F, height, delta_x, ksig_f, P_total):
 
     # Iterative method for solving eigen problem
     iteration = 1
+    # Tolerence : continue while the difference between current and previous k
+    # is greater than 10^-7
     while abs(k - k_last) > 1e-7 and iteration <= max_iteration:
 
         # Store last values
@@ -36,10 +40,7 @@ def simulation(nbr_mech, M, F, height, delta_x, ksig_f, P_total):
 
         iteration += 1
 
-    #print("Iteration : ", iteration)
-    #print("k =", k)
-
-    # Normalisation
+    # Normalization
     P_fiss = height*delta_x*delta_x*ksig_f*phi
     P_fiss = P_fiss[:nbr_mech] + P_fiss[nbr_mech:]
     P_rel = P_fiss/np.mean(P_fiss)

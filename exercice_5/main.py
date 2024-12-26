@@ -1,8 +1,18 @@
+"""
+    ___         _   ___         _      _   _                   _ _   _                                          _              
+   | __|  _ ___| | | __|_ _____| |_  _| |_(_)___ _ _   __ __ _(_) |_| |_    _____ ___ __  ___ ____  _ _ _ ___  (_)_ _    __ _  
+   | _| || / -_) | | _|\ V / _ \ | || |  _| / _ \ ' \  \ V  V / |  _| ' \  / -_) \ / '_ \/ _ (_-< || | '_/ -_) | | ' \  / _` | 
+   |_| \_,_\___|_| |___|\_/\___/_|\_,_|\__|_\___/_||_|  \_/\_/|_|\__|_||_| \___/_\_\ .__/\___/__/\_,_|_| \___| |_|_||_| \__,_| 
+   | |_  ___ _ __  ___  __ _ ___ _ _  ___ ___ _  _ ___  _ __  ___ __| (_)__ _      |_|                                         
+   | ' \/ _ \ '  \/ _ \/ _` / -_) ' \/ -_) _ \ || (_-< | '  \/ -_) _` | / _` |                                                 
+   |_||_\___/_|_|_\___/\__, \___|_||_\___\___/\_,_/__/ |_|_|_\___\__,_|_\__,_|                                                 
+                       |___/                                                                                                   
+"""
+
 # === Importation ===
 import numpy as np
 import matplotlib.pyplot as plt
 import scipy as sci
-import math
 
 from Element import *
 from analytic import *
@@ -11,6 +21,7 @@ from exponential import *
 from convergence import *
 from matrix import *
 
+# From hour to second (utility function)
 def hour_to_second(h : float):
     return h*3600
 
@@ -34,12 +45,10 @@ Vector form
 | Pu 239 |
 | X      |
 \ Y      /
-
-=== TODO ===
-- Error on X decrease instead on increasing and do not begin at 0
 """
 
 # Create elements
+#         Element(sig_c,     sig_s,    nu,   sig_f,     kappa,    T,                 FY)
 U_235   = Element(1e-24*12,  1e-24*10, 2.44, 1e-24*56,  3.24e-11, 0,                 0)
 U_238   = Element(1e-24*4,   1e-24*10, 2.79, 1e-24*1,   3.32e-11, 0,                 0)
 Pu_239  = Element(1e-24*81,  1e-24*10, 2.87, 1e-24*144, 3.33e-11, 0,                 0)
@@ -125,10 +134,10 @@ if 1 in run_part:
 
     n_analytical = np.transpose(n_analytical)
 
-    # Euler error (error set at zero if divided by 0)
+    # Euler relative error (error set at zero if divided by 0)
     delta_euler = np.divide(np.abs(N_euler - n_analytical), n_analytical, out=np.zeros_like(n_analytical), where=(n_analytical!=0))
 
-    # Plots Analytical
+    # Plots Analytical solution
     fig = plt.figure()
     ax = fig.subplots()
     ax.set_title("Analytical - " + str(nbr_day_simulated) + " days")
@@ -142,15 +151,15 @@ if 1 in run_part:
     fig.savefig("analytic_" + str(nbr_day_simulated) + "_day.pdf")
 
     # Plots Numerical - Exponential
-    fig = plt.figure()
-    ax = fig.subplots()
-    ax.set_title("Numerical - Exponential")
-    ax.plot(t_array, N_exp)
-    ax.grid()
-    ax.set_yscale("log")
-    ax.set_xlabel("$t$ [s]")
-    ax.set_ylabel("$n$ [cm$^{-3}$]")
-    ax.legend(listname)
+    #fig = plt.figure()
+    #ax = fig.subplots()
+    #ax.set_title("Numerical - Exponential")
+    #ax.plot(t_array, N_exp)
+    #ax.grid()
+    #ax.set_yscale("log")
+    #ax.set_xlabel("$t$ [s]")
+    #ax.set_ylabel("$n$ [cm$^{-3}$]")
+    #ax.legend(listname)
 
     #fig.savefig("exp_" + str(nbr_day_simulated) + "_day.pdf")
 
@@ -193,7 +202,7 @@ if 1 in run_part:
 if 2 in run_part:
     print("Run part 2")
 
-    # Time parameters
+    # Time parameters (180 days)
     t = 180*24*3600
     dt = 60
     nbr_step = int(t//dt)
@@ -208,13 +217,6 @@ if 2 in run_part:
     phi = np.zeros(nbr_step+1)
 
     # Flux at time t=0
-    # phi_current = P/(
-    #     current_N[0] * U_235.kappa * U_235.sigma_f +
-    #     current_N[1] * U_238.kappa * U_238.sigma_f + 
-    #     current_N[2] * Pu_239.kappa * Pu_239.sigma_f + 
-    #     current_N[3] * X.kappa * X.sigma_f + 
-    #     current_N[4] * Y.kappa * Y.sigma_f
-    # )
     phi_current = 1.40574e15
     phi[0] = phi_current
     print("Current phi ", phi_current)
@@ -246,6 +248,7 @@ if 2 in run_part:
     
 
     # Plots
+    # Plot the flux evolution
     fig = plt.figure()
     ax = fig.subplots()
     ax.set_title("Flux evolution")
@@ -256,6 +259,7 @@ if 2 in run_part:
 
     fig.savefig("Phi.pdf")
 
+    # Plot the Isotope concentrations evolution
     fig = plt.figure()
     ax = fig.subplots()
     ax.set_title("Isotopes evolution")

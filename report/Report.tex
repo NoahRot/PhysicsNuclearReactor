@@ -93,7 +93,7 @@
 % Small precisions
 To run an exercice, open CMD and run the main file. The scripts that run a simulation is always named as main : \\
 \begin{lstlisting}
-python main.py
+preject_path/exercice_i> python main.py
 \end{lstlisting}
 
 Some scripts can create other files:
@@ -218,5 +218,151 @@ Net current at the core boundary (scientific format with 5 significant digits): 
 
 \newpage
 \section{Exercice \#3 - Modeling a planar reactor (2 groups)}
+
+\subsection{Question \#1 Numerical formulation}
+
+Relationship between $\mathrm{\Phi}_i,\ \mathrm{\Phi}_{i+1},\ \mathrm{\Phi}_{i-1}$ for group g at any point within the material:
+\begin{equation}
+	A \Phi_i + B \Phi_{i-1} +C \Phi_{i+1} = D
+\end{equation}
+
+Expression of the source term for the fast and thermal energy group:
+\begin{equation}
+	\begin{split}
+		b_1 &= \nu \Sigma_{f1} \Phi_1 + \nu \Sigma_{f2} \Phi_2 \\
+		b_2 &= \Sigma_{s1 \rightarrow 2} \Phi_1
+	\end{split}
+	\end{equation}
+
+\subsection{Question \#2 Analytical solution for the bare system}
+\begin{equation}
+	k_{eff}= \frac{\nu \Sigma_{f1} (B^2D_2 + \Sigma_{t2}) + \Sigma_{s}^{1 \rightarrow 2} \nu \Sigma_{f2}}{(B^2D_1 + \Sigma_{t1})(B^2D_2 + \Sigma_{t2}) - \Sigma_s^{1 \rightarrow 2} \Sigma_s^{2 \rightarrow 1}}
+\end{equation}
+
+
+keff (scientific format with 5 significant digits): 1.08440 \\
+
+\subsection{Question \#3 Numerical solution of the bare homogeneous reactor}
+
+
+
+keff (scientific format with 5 significant digits): 1.08677 \\
+
+fast buckling (scientific format with 5 significant digits): 0.030229 \\
+
+thermal buckling (scientific format with 5 significant digits): 0.030348 \\
+
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex3_BarePhi.pdf}
+	\centering
+	\caption{Fast and thermal fluxes in the bare reactor for a mesh size of 0.1 cm.}
+\end{figure}
+
+\subsection{Question \#4}
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex3_BareDelta.pdf}
+	\centering
+	\caption{Difference between numerical and analytical solutions for the fast and thermal fluxes in the bare reactor for a mesh size of 0.1 cm.}
+\end{figure}
+
+\subsection{Question \#5 Numerical solution of the reflected reactor}
+
+
+keff (scientific format with 5 significant digits): 1.09199 \\
+
+fast net current (scientific format with 5 significant digits) at the core/reflector interface: -0.039511 \\
+
+thermal net current (scientific format with 5 significant digits) at the core/reflector interface: 0.0058747 \\
+
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex3_ReflectorH0.pdf}
+	\centering
+	\caption{Fast and thermal fundamental fluxes in the reflected reactor for a mesh size of 0.1 cm.}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex3_ReflectorH1.pdf}
+	\centering
+	\caption{Fast and thermal first harmonic of the fluxes in the reflected reactor for a mesh size of 0.1 cm.}
+\end{figure}
+
+first harmonic eigenvalue (scientific format with 5 significant digits): 1.02113 \\
+
+
+
+
+
+% *******************************************************************************
+% *** Exercice 4 ****************************************************************
+% *******************************************************************************
+
+\newpage
+\section{Exercice \#4 - Modeling a more realistic planar reactor in two groups}
+
+\subsection{Question \#1 Initial Loading Pattern}
+
+keff (scientific format with 5 significant digits): 1.21882 \\
+
+peak power (scientific format with 5 significant digits): $7.37503 \cdot 10^5$ W \\
+
+fast flux at the core boundary (scientific format with 5 significant digits): $1.87308 \cdot 10^{15}$ n cm$^{-2}$ s$^{-1}$\\
+
+\begin{figure}[h]
+	\includegraphics[width=10cm]{fig/Ex4_Flux.pdf}
+	\centering
+	\caption{Normalized fast and thermal fluxes}
+\end{figure}
+
+\begin{figure}[h]
+	\includegraphics[width=10cm]{fig/Ex4_Power.pdf}
+	\centering
+	\caption{Relative power distribution}
+\end{figure}
+
+Explanation of the main features of the power distribution: The newest batch are placed at the right boundray, meaning that more fission product are present in the middle of the reactor. This mean that the neutrons are more absorbed in the middle, leading to a greater flux at the boundary. Moreover, the newest batch create more fission meaning more power and the reflector reflect a part of the neutrons at the boundary leading to a small increase in the power at the boundary. \\
+
+
+\subsection{Question \#2 Optimized Loading Pattern}
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|c|c|c|c|c|c|c|}
+		\hline
+		2& 1& 2& 3& 1& 3& 4\\
+		\hline
+	\end{tabular}
+	\caption{Loading pattern from the core center (left to right)}
+\end{table}
+
+keff (scientific format with 5 significant digits): 1.19399 \\
+
+peak power (scientific format with 2 significant digits): $6.53340 \cdot 10^{5}$ W\\
+
+fast flux at the core boundary (scientific format with 2 significant digits):$6.28 \cdot 10^{13}$ n cm$^{-2}$ s$^{-1}$\\
+
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex4_Flux_opti.pdf}
+	\centering
+	\caption{Normalized fast and thermal fluxes}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex4_Power_opti.pdf}
+	\centering
+	\caption{Relative power distribution}
+\end{figure}
+
+
+
+
+
+% *******************************************************************************
+% *** Exercice 5 ****************************************************************
+% *******************************************************************************
+
+\newpage
+\section{Exercice \#5 - Fuel Evolution with exposure in a homogeneous media}
+
+
 
 \end{document}

@@ -1,5 +1,6 @@
 import numpy as np
 
+# Matrix M without reflector
 def matrix_M_no_ref(nbr_mech, nbr_group, delta_x, D, Sigma_1_to_2, Sigma_a):
 
     # Create an empty matrix
@@ -34,15 +35,16 @@ def matrix_M_no_ref(nbr_mech, nbr_group, delta_x, D, Sigma_1_to_2, Sigma_a):
             mat[i][i+1] = beta_right/np.power(delta_x, 2)
             mat[i][i-1] = beta_left/np.power(delta_x, 2)
 
-        # Transfert from a group to another
+        # Scattering part
 
-        # From group 1 to group 2
+        # From group 1 to group 2 (fast to thermal)
         if i//nbr_mech == 1:
             mat[i][i%nbr_mech] = Sigma_1_to_2[i-nbr_mech]
 
     return mat
 
-def matrix_F_no_ref(nbr_mech, nbr_group, nu_Sigma_f_C):
+# Build Matrix F
+def matrix_F(nbr_mech, nbr_group, nu_Sigma_f_C):
 
     # Create an empty matrix
     mat = np.zeros([int(nbr_mech*nbr_group), int(nbr_mech*nbr_group)])
@@ -53,6 +55,7 @@ def matrix_F_no_ref(nbr_mech, nbr_group, nu_Sigma_f_C):
 
     return mat
 
+# Matrix M with reflector
 def matrix_M_ref(nbr_mech, nbr_group, delta_x, D, Sigma_1_to_2, Sigma_a):
 
     # Create an empty matrix
@@ -93,7 +96,5 @@ def matrix_M_ref(nbr_mech, nbr_group, delta_x, D, Sigma_1_to_2, Sigma_a):
         # From group 1 to group 2
         if i//nbr_mech == 1:
             mat[i][i%nbr_mech] = Sigma_1_to_2[i-nbr_mech]
-
-    np.set_printoptions(precision=3)
 
     return mat
