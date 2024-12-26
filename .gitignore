@@ -1,0 +1,13 @@
+# Repository
+/notice
+*/__pycache__
+
+# Simulation file types
+*.npy
+
+# Report file types
+*.aux
+*.fdb_latexmk
+*.fls
+*.log
+*.gz
