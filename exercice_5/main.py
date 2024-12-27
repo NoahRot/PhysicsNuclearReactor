@@ -66,7 +66,7 @@ run_convergence_study = True
 # Part of the exercice that will be run
 run_part = [1, 2]
 # Number of day simulated. 
-nbr_day_simulated = 1
+nbr_day_simulated = 365
 
 # Compute number of elements
 h = 400                 # Height of the fuel rods [cm]
@@ -94,6 +94,7 @@ V_ratio = (np.pi*r*r*nbr_rods)/(pitch*pitch) # Ratio between fuel volume and rea
 n_235 *= V_ratio    # Density of U-235 inside the reactor (not just fuel rod)
 n_238 *= V_ratio    # Density of U-238 inside the reactor (not just fuel rod)
 
+print("*** Initial concentration ***")
 print("Initial n for U 235 =", n_235)
 print("Initial n for U 238 =", n_238)
 
@@ -102,24 +103,24 @@ print("Initial n for U 238 =", n_238)
 # ***********************************
 
 if 1 in run_part:
-    print("Run part 1")
-
     # Build the initial values
     N_0 = np.array([n_235, n_238, 0, 0, 0])
 
     # Build the matrix with constant flux
     A = matrix_A_const_phi(phi, U_235, U_238, Pu_239, X, Y)
-    print("Matrix A :\n", A)
 
     # Time parameters
     t = 24*3600*nbr_day_simulated
+    t_one_day = 24*3600
     dt = 60
     nbr_step = int(t//dt)
+    nbr_step_one_day = int(t_one_day//dt)
     t_array = np.linspace(0, t, nbr_step+1)
+    t_array_one_day = np.linspace(0, t_one_day, nbr_step_one_day+1)
 
     # Exponential method
-    N_exp = exponential(nbr_step, dt, N_0, A)
-    print("Exp N final :",N_exp[-1,:])
+    #N_exp = exponential(nbr_step, dt, N_0, A)
+    #print("Exp N final :",N_exp[-1,:])
 
     # Euler method
     N_euler = Euler(nbr_step, dt, N_0, A)
@@ -137,7 +138,7 @@ if 1 in run_part:
     # Euler relative error (error set at zero if divided by 0)
     delta_euler = np.divide(np.abs(N_euler - n_analytical), n_analytical, out=np.zeros_like(n_analytical), where=(n_analytical!=0))
 
-    # Plots Analytical solution
+    # Plots Analytical solution 365 days
     fig = plt.figure()
     ax = fig.subplots()
     ax.set_title("Analytical - " + str(nbr_day_simulated) + " days")
@@ -148,33 +149,32 @@ if 1 in run_part:
     ax.set_ylabel("$n$ [cm$^{-3}$]")
     ax.legend(listname)
 
-    fig.savefig("analytic_" + str(nbr_day_simulated) + "_day.pdf")
+    fig.savefig("Ex5_analytic_" + str(nbr_day_simulated) + "_day.pdf")
 
-    # Plots Numerical - Exponential
-    #fig = plt.figure()
-    #ax = fig.subplots()
-    #ax.set_title("Numerical - Exponential")
-    #ax.plot(t_array, N_exp)
-    #ax.grid()
-    #ax.set_yscale("log")
-    #ax.set_xlabel("$t$ [s]")
-    #ax.set_ylabel("$n$ [cm$^{-3}$]")
-    #ax.legend(listname)
-
-    #fig.savefig("exp_" + str(nbr_day_simulated) + "_day.pdf")
-
-    # Plots Numerical - Euler
+    # Plots Analytical solution 1 days
     fig = plt.figure()
     ax = fig.subplots()
-    ax.set_title("Numerical - Euler")
-    ax.plot(t_array, N_euler)
+    ax.set_title("Analytical - " + str(1) + " days")
+    ax.plot(t_array_one_day, n_analytical[:nbr_step_one_day+1])
     ax.grid()
     ax.set_yscale("log")
     ax.set_xlabel("$t$ [s]")
     ax.set_ylabel("$n$ [cm$^{-3}$]")
     ax.legend(listname)
 
-    fig.savefig("euler_" + str(nbr_day_simulated) + "_day.pdf")
+    fig.savefig("Ex5_analytic_" + str(1) + "_day.pdf")
+
+    # Plots Numerical - Euler
+    #fig = plt.figure()
+    #ax = fig.subplots()
+    #ax.set_title("Numerical - Euler")
+    #ax.plot(t_array, N_euler)
+    #ax.grid()
+    #ax.set_yscale("log")
+    #ax.set_xlabel("$t$ [s]")
+    #ax.set_ylabel("$n$ [cm$^{-3}$]")
+    #ax.legend(listname)
+    #fig.savefig("Ex5_euler_" + str(nbr_day_simulated) + "_day.pdf")
 
     # Plots Numerical - Error on Euler
     fig = plt.figure()
@@ -187,7 +187,7 @@ if 1 in run_part:
     ax.legend(listname)
     ax.grid()
 
-    fig.savefig("euler_error_" + str(nbr_day_simulated) + "_day.pdf")
+    fig.savefig("Ex5_euler_error_" + str(nbr_day_simulated) + "_day.pdf")
 
     # Convergence study
     if run_convergence_study:
@@ -219,7 +219,6 @@ if 2 in run_part:
     # Flux at time t=0
     phi_current = 1.40574e15
     phi[0] = phi_current
-    print("Current phi ", phi_current)
 
     # Exponential method
     for i in range(nbr_step):
@@ -257,7 +256,7 @@ if 2 in run_part:
     ax.set_ylabel("$\Phi$ [n cm$^{-2}$ s$^{-1}$]")
     ax.set_xlabel("$t$ [s]")
 
-    fig.savefig("Phi.pdf")
+    fig.savefig("Ex5_Phi.pdf")
 
     # Plot the Isotope concentrations evolution
     fig = plt.figure()
@@ -270,6 +269,6 @@ if 2 in run_part:
     ax.set_ylabel("$n$ [cm$^{-3}$]")
     ax.legend(listname)
 
-    fig.savefig("isotopes.pdf")
+    fig.savefig("Ex5_isotopes.pdf")
 
     plt.show()

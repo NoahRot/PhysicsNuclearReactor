@@ -93,4 +93,4 @@ def convergence_study(phi, n_235, n_238, U_235, U_238, Pu_239, X, Y):
     ax.legend(["Euler", "Exponential", 
                "Conv. Euler: " + str('%.2f' % euler_order), "Conv. exp: " + str('%.2f' % exp_order)])
     
-    fig.savefig("convergence.pdf")
+    fig.savefig("Ex5_convergence.pdf")

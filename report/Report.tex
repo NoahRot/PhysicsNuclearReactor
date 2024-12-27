@@ -66,7 +66,7 @@
 
 \lstset{style=mystyle}
 
-
+\counterwithin{figure}{section}
 
 % nouvelles commandes LaTeX, utilis\'ees comme abreviations utiles
 \newcommand{\mail}[1]{{\href{mailto:#1}{#1}}}
@@ -363,6 +363,74 @@ fast flux at the core boundary (scientific format with 2 significant digits):$6.
 \newpage
 \section{Exercice \#5 - Fuel Evolution with exposure in a homogeneous media}
 
+\subsection{Question \#1 Analytical solution}
 
+
+\begin{table}[H]
+	\centering
+	\begin{tabular}{|l|c|}
+		\hline
+		U235& 2.30941 \\
+		U238& 7.46708 \\
+		Pu239& 0.00000 \\
+		X& 0.00000 \\
+		Y& 0.00000 \\
+		\hline
+	\end{tabular}
+	\caption{Initial atomic concentrations in $at/cm^{-3}$}
+\end{table}
+
+Governing differential equations for each isotope (U235,U238,Pu239, X and Y):
+\begin{equation}
+	\begin{split}
+	\frac{dN_{U235}}{dt} &= -\Phi(\sigma_{c,U235} + \sigma_{f,U235})N_{U235} \\
+	\frac{dN_{U238}}{dt} &= -\Phi(\sigma_{c,U238} + \sigma_{f,U238})N_{U238} \\
+	\frac{dN_{Pu239}}{dt} &= -\Phi(\sigma_{c,Pu239} + \sigma_{f,Pu239})N_{Pu239} + \Phi \sigma_{c,U238} N_{U238} \\
+	\frac{dN_{X}}{dt} &= \Phi \sigma_{f,U235} FY_X N_{U235} - (\Phi \sigma_{c,X} + \lambda_X) N_X \\
+	\frac{dN_{Y}}{dt} &=  \Phi \sigma_{f,U235} FY_Y N_{U235} -\Phi \sigma_{c,Y} N_Y\\
+	\end{split}	 
+\end{equation}
+
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex5_analytic_365_day.pdf}
+	\centering
+	\caption{Evolution of the various isotopes concentrations in a semilog-Y scale between 0 and 365 days}
+\end{figure}
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex5_analytic_1_day.pdf}
+	\centering
+	\caption{Evolution of the various isotopes concentrations in a semilog-Y scale between 0 and 1 day}
+\end{figure}
+
+\subsection{Question \#2 Numerical solution}
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex5_euler_error_365_day.pdf}
+	\centering
+	\caption{Evolution of the error with respect to the analytical solution; for the various isotopes concentrations in a semilog-Y scale  between 0 and 365 days with the Forward Euler method and a time-step of 1min}
+\end{figure}
+
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex5_convergence.pdf}
+	\centering
+	\caption{Illustration of the convergence rate of Euler and Matrix exponential methods, varying the time step between 1min and 6h. The quantity of interest is the concentration of X after 1 day.}
+\end{figure}
+
+
+\subsection{Question \#3 Advanced Problem}
+ 
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex5_Phi.pdf}
+	\centering
+	\caption{Evolution of the flux level ($\phi [cm^{-2}.s^{-1}]$) as a function of time.}
+	\label{err}
+\end{figure}
+Explain the observed trends in Figure \ref{err} : Initially the flux decrease because of the production of $^{239}$Pu that also produce power, leading to a smaller neutron flux to keep the power constant. The neutron flux decrease between 0 s and $0.87 \cdot 10^6$ s. Then the Y fission product accumulate and the amount of $^{235}$U decrease, leading to a greater flux to keep the power constant. The flux increase after $0.87 \cdot 10^6$ s.
+
+\begin{figure}[H]
+	\includegraphics[width=10cm]{fig/Ex5_isotopes.pdf}
+	\centering
+	\caption{Evolution of the various isotopes concentrations in a semilog-Y scale  between 0 and 180 days.}
+	\label{err2}
+\end{figure} 
 
 \end{document}

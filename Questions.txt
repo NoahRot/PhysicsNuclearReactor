@@ -3,7 +3,6 @@ Num2 Q2. Lorsqu'on nous demande l'expression analytique de keff, doit-on seuleme
 Num5 : Oreder of convergence in exp method is 1, but should be 3 ?
 Num2 : For the analytical solution, do we use the material or geometrical buckling ?
 Num4 : Optimization patern, do we run the program ? Because it take some time.
-Num5 : Should we double the code (one for 1 day and the other for 1 year) ?
 
 TODO
 [X] Num3 : k_eff not working
@@ -15,4 +14,4 @@ Exercices code review
 [X] Exercice 2
 [X] Exercice 3
 [X] Exercice 4
-[ ] Exercice 5
+[X] Exercice 5
