@@ -123,6 +123,16 @@ Relationship between $\mathrm{\Phi}_i,\ \mathrm{\Phi}_{i+1},\ \mathrm{\Phi}_{i-1
     A \Phi_i + B \Phi_{i-1} +C \Phi_{i+1} = D
 \end{equation}
 
+With,
+\begin{itemize}
+	\item $\beta_l = \frac{2D_i D_{i-1}}{D_i + D_{i-1}}$
+	\item $\beta_r = \frac{2D_i D_{i+1}}{D_i + D_{i+1}}$
+	\item $A = -(\beta_l + \beta_r)/\Delta x^2 - \Sigma_a$
+	\item $B = \beta_l/\Delta x^2$
+	\item $C = \beta_r/\Delta x^2$
+	\item $D = 0$
+\end{itemize}
+
 Coefficients of the matrix A (4 significant digits), for a mesh size of 0.1cm:\\
 Coef $A_{i,i}$: -16.6037 \\
 Coef $A_{i-1,i}$: 8.2919 \\
@@ -133,10 +143,27 @@ at the source:
 \begin{equation}
     A \Phi_1 + B \Phi_{2} = C
 \end{equation}
+With,
+\begin{itemize}
+	\item $\beta_r = \frac{2D_i D_{i+1}}{D_i + D_{i+1}}$
+	\item $A = -\beta_r/\Delta x^2 - \Sigma_a$
+	\item $B = \beta_r/\Delta x^2$
+	\item $C = S/(2 \Delta x)$
+\end{itemize}
+
 at the RHS of the problem:
 \begin{equation}
     A \Phi_n + B \Phi_{n-1} = C
 \end{equation}
+With,
+\begin{itemize}
+	\item $\beta_l = \frac{2D_i D_{i-1}}{D_i + D_{i-1}}$
+	\item $B_C = (2(\frac{\Delta x}{4D_i}+1))^{-1}$
+	\item $A = -B_C/\Delta x - \beta_l/\Delta x^2 - \Sigma_a$
+	\item $B = \beta_r/\Delta x^2$
+	\item $C = 0$
+\end{itemize}
+
 Associated coefficients of the matrix A (4 significant digits), for a mesh size of 0.1cm:
 at the source: \\
 Coef $A_{1,i}$: -8.3119 \\
@@ -225,6 +252,15 @@ Relationship between $\mathrm{\Phi}_i,\ \mathrm{\Phi}_{i+1},\ \mathrm{\Phi}_{i-1
 \begin{equation}
 	A \Phi_i + B \Phi_{i-1} +C \Phi_{i+1} = D
 \end{equation}
+With,
+\begin{itemize}
+	\item $\beta_l = 2 D_i D_{i-1} / (D_i + D_{i-1})$
+	\item $\beta_r = 2 D_i D_{i+1} / (D_i + D_{i+1})$
+	\item $A = -(\beta_r + \beta_l)/ \Delta x^2 - \Sigma_{1 \rightarrow 2} - \Sigma_a$
+	\item $B = \beta_l/ \Delta x^2$
+	\item $C = \beta_r/ \Delta x^2$
+	\item $D = 0$
+\end{itemize}
 
 Expression of the source term for the fast and thermal energy group:
 \begin{equation}
@@ -238,7 +274,7 @@ Expression of the source term for the fast and thermal energy group:
 \begin{equation}
 	k_{eff}= \frac{\nu \Sigma_{f1} (B^2D_2 + \Sigma_{t2}) + \Sigma_{s}^{1 \rightarrow 2} \nu \Sigma_{f2}}{(B^2D_1 + \Sigma_{t1})(B^2D_2 + \Sigma_{t2}) - \Sigma_s^{1 \rightarrow 2} \Sigma_s^{2 \rightarrow 1}}
 \end{equation}
-
+Note that $\Sigma_s^{2 \rightarrow 1}$ is 0, because no upscattering.
 
 keff (scientific format with 5 significant digits): 1.08440 \\
 

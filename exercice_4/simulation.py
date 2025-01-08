@@ -41,7 +41,7 @@ def simulation(nbr_mech, M, F, height, delta_x, ksig_f, P_total):
         iteration += 1
 
     # Normalization
-    P_fiss = height*delta_x*delta_x*ksig_f*phi
+    P_fiss = height*delta_x*ksig_f*phi
     P_fiss = P_fiss[:nbr_mech] + P_fiss[nbr_mech:]
     P_rel = P_fiss/np.mean(P_fiss)
 

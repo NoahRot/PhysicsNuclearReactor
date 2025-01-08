@@ -120,11 +120,33 @@ print("Fast Flux at boudary :", flux_boundary*1e-15, " 10^15")
 
 # Plots
 # Plot fast and thermal flux
+# Create the mirrored data
+x_mirror = -x[::-1]  # Reverse X and change sign
+phi_mirror = phi[::-1]  # Reverse Phi
+
+# Combine the original and mirrored data
+x_full = np.concatenate((x_mirror, x[1:]))  # Exclude the duplicate center point
+phi_full = np.concatenate((phi_mirror, phi[1:]))
+
+# Mirror the results to plot the full flux shape
+x_fast = x[0:nbr_mech]
+phi_fast = phi[0:nbr_mech]
+x_fast_mirror = -x_fast[::-1]
+phi_fast_mirror = phi_fast[::-1]
+x_fast_full = np.concatenate((x_fast_mirror, x_fast[1:]))
+phi_fast_full = np.concatenate((phi_fast_mirror, phi_fast[1:]))
+
+x_ther = x[nbr_mech:]
+phi_ther = phi[nbr_mech:]
+x_ther_mirror = -x_ther[::-1]
+phi_ther_mirror = phi_ther[::-1]
+x_ther_full = np.concatenate((x_ther_mirror, x_ther[1:]))
+phi_ther_full = np.concatenate((phi_ther_mirror, phi_ther[1:]))
+
 fig = plt.figure()
 ax = fig.subplots()
-ax.plot(x[0:nbr_mech], phi[0:nbr_mech])
-ax.plot(x[nbr_mech:], phi[nbr_mech:])
-ax.vlines(np.linspace(1, len(list_batch), len(list_batch))*width, 0, np.max(phi), linestyle="--", color="black")
+ax.plot(x_fast_full, phi_fast_full)
+ax.plot(x_ther_full, phi_ther_full)
 ax.grid()
 ax.set_ylabel("$\Phi$ [n cm$^{-2}$ s$^{-1}$]")
 ax.set_xlabel("$x$ [cm]")
@@ -133,9 +155,17 @@ ax.legend(["Fast", "Thermal"])
 fig.savefig("Ex4_Flux.pdf")
 
 # Plot relative power
+# Mirror the results to plot the full power
+x_half = x[0:nbr_mech]
+x_half_mirror = -x_half[::-1]
+x_full = np.concatenate((x_half_mirror, x_half[1:]))
+
+P_rel_mirror = P_rel[::-1]
+P_rel_full = np.concatenate((P_rel_mirror, P_rel[1:]))
+
 fig = plt.figure()
 ax = fig.subplots()
-ax.plot(x[0:nbr_mech], P_rel)
+ax.plot(x_full, P_rel_full)
 ax.grid()
 ax.set_xlabel("$x$ [cm]")
 ax.set_ylabel("$P_{rel}$")
@@ -170,6 +200,7 @@ best_ksig_f = None
 
 # Simulation on each permutation
 count = 1
+
 for perm in unique_permutations:
 
     # Print how many simulations have been done
@@ -217,7 +248,8 @@ for perm in unique_permutations:
             best_ksig_f = np.copy(ksig_f)
 
 # Compute the flux at the boudrary between core and reflector
-flux_boundary = (best_D[121]*best_phi[121] + best_D[120]*best_phi[120])/(best_D[121] + best_D[120])
+#flux_boundary = (best_D[121]*best_phi[121] + best_D[120]*best_phi[120])/(best_D[121] + best_D[120])
+flux_boundary = best_phi[nbr_mech-1] + best_phi[2*nbr_mech-1]
 
 # Print results
 print("Valid permutations :", list_valid_perm)
@@ -225,16 +257,33 @@ print("Best permutation :", perm)
 print("Best k =", k)
 print("Peak power : ", np.max(height*delta_x*delta_x*best_ksig_f*best_phi))
 print("Fast flux at the core boundary : ", flux_boundary*1e-13, " 10^13")
+print("Phi peak :", np.max(phi))
 
 # Plots
 # Plot the flux
+
+x_fast = x[0:nbr_mech]
+phi_fast = best_phi[0:nbr_mech]
+x_fast_mirror = -x_fast[::-1]
+phi_fast_mirror = phi_fast[::-1]
+x_fast_full = np.concatenate((x_fast_mirror, x_fast[1:]))
+phi_fast_full = np.concatenate((phi_fast_mirror, phi_fast[1:]))
+
+x_ther = x[nbr_mech:]
+phi_ther = best_phi[nbr_mech:]
+x_ther_mirror = -x_ther[::-1]
+phi_ther_mirror = phi_ther[::-1]
+x_ther_full = np.concatenate((x_ther_mirror, x_ther[1:]))
+phi_ther_full = np.concatenate((phi_ther_mirror, phi_ther[1:]))
+
 fig = plt.figure()
 ax = fig.subplots()
-#ax.plot(x[0:nbr_mech], phi_1[0:nbr_mech])
-#ax.plot(x[nbr_mech:], phi_1[nbr_mech:])
 
-ax.plot(x[0:nbr_mech], best_phi[0:nbr_mech])
-ax.plot(x[nbr_mech:], best_phi[nbr_mech:])
+#ax.plot(x[0:nbr_mech], best_phi[0:nbr_mech])
+#ax.plot(x[nbr_mech:], best_phi[nbr_mech:])
+
+ax.plot(x_fast_full, phi_fast_full)
+ax.plot(x_ther_full, phi_ther_full)
 
 ax.vlines(np.linspace(1, len(list_batch), len(list_batch))*width, 0, np.max(np.append(best_phi, phi_1)), linestyle="--", color="black")
 ax.grid()
@@ -245,9 +294,19 @@ ax.legend(["Fast", "Thermal"])
 fig.savefig("Ex4_Flux_opti.pdf")
 
 # Plot the relative power
+
+# Mirror the results to plot the full power
+x_half = x[0:nbr_mech]
+x_half_mirror = -x_half[::-1]
+x_full = np.concatenate((x_half_mirror, x_half[1:]))
+
+P_rel_mirror = best_power_rel[::-1]
+P_rel_full = np.concatenate((P_rel_mirror, best_power_rel[1:]))
+
 fig = plt.figure()
 ax = fig.subplots()
-ax.plot(x[:nbr_mech], best_power_rel)
+#ax.plot(x[:nbr_mech], best_power_rel)
+ax.plot(x_full, P_rel_full)
 ax.set_xlabel("$x$ [cm]")
 ax.set_ylabel("$P_{rel}$")
 ax.grid()

@@ -80,10 +80,7 @@ N_A = 6.0221408e+23     # Avogardro number
 nbr_rods = 264          # Number of rods inside the reactor
 
 # Compute density inside a fuel rod
-M = 2*M_O + 0.03*M_U_235 + 0.97*M_U_238 # Molar mass of the fuel
-N_tot = rho*np.pi*r*r*h*nbr_rods*N_A/M  # Total number of UO_2 molecules inside the fuel
-N_235 = 0.03*N_tot                      # Total number of U-235 atoms inside the fuel
-N_238 = 0.97*N_tot                      # Total number of U-238 atoms inside the fuel
+M = 2*M_O + 0.03*M_U_235 + 0.97*M_U_238 # Molar mass of the UO_2
 n = rho*N_A/M                           # Density of the UO_2 molecules inside the fuel
 n_235 = 0.03*n                          # Density of U-235 atoms inside the fuel
 n_238 = 0.97*n                          # Density of U-238 atoms inside the fuel
@@ -192,8 +189,6 @@ if 1 in run_part:
     # Convergence study
     if run_convergence_study:
         convergence_study(phi, n_235, n_238, U_235, U_238, Pu_239, X, Y)
-
-    plt.show()
 
 # ******************************************
 # *** Second part - More complex problem ***
